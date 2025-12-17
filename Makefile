@@ -2,7 +2,7 @@ DOCKER_IMAGE := mro-app
 SHORT_COMMIT ?= $(shell git rev-parse --short=5 HEAD)
 TIMESTAMP=$(shell date +%s)
 
-all: build-docker run-docker
+all-docker: build-docker run-docker analyze-capture
 
 build-docker: ## Build docker image
 	@echo "==> Build docker image"
@@ -19,3 +19,10 @@ analyze-capture:
 	@memray flamegraph ./tmp/capture.bin -o ./results/$(TIMESTAMP)/capture.html
 	@memray transform --leaks gprof2dot ./tmp/capture.bin -o ./results/$(TIMESTAMP)/memray-gprof2dot-capture.json
 	@gprof2dot -f json ./results/$(TIMESTAMP)/memray-gprof2dot-capture.json | dot -Tpng -o ./results/$(TIMESTAMP)/capture.png
+
+all: run analyze-capture
+
+run:
+	@rm -fr tmp
+	@mkdir -p tmp
+	@memray run --native --output ./tmp/capture.bin main.py

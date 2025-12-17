@@ -3,7 +3,7 @@ import asyncio
 
 
 async def _main() -> None:
-    while True:
+    for i in range(500):
         async with httpx.AsyncClient() as client:
             await client.request("GET", "https://example.com/")
         await asyncio.sleep(1)

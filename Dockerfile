@@ -21,6 +21,7 @@ FROM python:3.14.2-slim
 # Set environment variables
 # See: https://docs.python.org/3/using/cmdline.html#envvar-PYTHONUNBUFFERED
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONMALLOC=debug
 
 # Create and set the working directory
 WORKDIR /mro-app
